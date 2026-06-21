@@ -1,0 +1,7 @@
+ Program
+   Variables Setup
+   Robot Program
+     MoveJ
+       Waypoint_1
+   SubProgram_1
+     <empty>

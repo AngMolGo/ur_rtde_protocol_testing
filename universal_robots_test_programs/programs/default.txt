@@ -1,0 +1,10 @@
+ Program
+   Variables Setup
+   Robot Program
+     <empty>
+   Thread_1
+     Loop
+       set_digital_in(1, True )
+       Wait: 0.5
+       set_digital_in(1, False )
+       Wait: 0.5

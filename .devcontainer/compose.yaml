@@ -1,0 +1,74 @@
+services:
+  devc_rtde_protocol_testing:
+    # Construcción del contenedor
+    image: devc_general:jazzy_idf_uros_agent
+
+    # Cómo se llamará el contenedor generado
+    container_name: devc_rtde_protocol_testing
+
+    # Mapea el workspace local dentro del contenedor
+    volumes:
+      - ../rtde_testing_ws:/root/rtde_testing_ws
+      - /dev:/dev
+
+    # Configuración de red del contenedor
+    # Para fines de la aplicación, la comunicación del contenedor de ROS2 se realizará internamente con una red privada.
+    networks:
+      devc_rtde_protocol_testing_net:
+        ipv4_address: 192.168.5.101
+
+    command: ["/bin/bash", "-il"]
+    tty: true
+    stdin_open: true
+
+
+  # ----------------------------------------------------------------
+
+
+  # # # # # # # # #   Universal Robots   # # # # # # # # #
+  container_rtde_protocol_testing_ur: # Nombre del servicio
+    
+    image: universalrobots/ursim_e-series:5.23
+
+    # Cómo se llamará el contenedor generado
+    container_name: container_rtde_protocol_testing_ur
+
+    # Mapeo de puertos a los puertos del Host
+    ports:
+      - 5900:5900
+      - 6080:6080 # Para visualizar el servicio noVNC en browser del host.
+
+    volumes:
+      - ../universal_robots_test_programs/programs:/ursim/programs
+
+    # Configuración de red del contenedor
+    #network_mode: host # Se vincula directamente con el Host (ya sea VM o el host de la computadora)
+    networks:
+      devc_rtde_protocol_testing_net: # Internamente se conecta con los otros contenedores mediante la red creada posteriormente
+        ipv4_address: 192.168.5.102
+
+    tty: true
+    stdin_open: true
+
+  # ----------------------------------------------------------------
+
+
+
+
+
+
+
+# # # # # # # # # #   Configuración de Redes   # # # # # # # # # # # 
+
+networks:
+  
+# # # Red interna # # #
+  devc_rtde_protocol_testing_net:
+    driver: bridge # Tipo bridge
+    ipam:
+      config:
+        - subnet: 192.168.5.0/24
+          gateway: 192.168.5.1
+
+  
+# *** La red de tipo host se define directamente en la configuración del servicio

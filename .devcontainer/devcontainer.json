@@ -1,0 +1,26 @@
+{
+  "name": "devc_rtde_protocol_testing",
+  "dockerComposeFile": "./compose.yaml",
+  "service": "devc_rtde_protocol_testing",
+  "workspaceFolder": "/root",
+  "runServices": ["devc_rtde_protocol_testing","container_rtde_protocol_testing_ur"],
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "/root/.setup_scripts/install_microros_idf_component_pip_packages.bash && /root/.setup_scripts/install_microros_agent_ws.bash && /root/.setup_scripts/install_ros_ur_driver.bash",
+  "overrideCommand": true,
+  "customizations": {
+    "vscode": {
+      "settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"idf.espIdfPath": "/opt/esp/idf",
+				"idf.toolsPath": "/root/.espressif",
+				"idf.gitPath": "/usr/bin/git"
+      },
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "espressif.esp-idf-extension"
+      ]
+    }
+  },
+  "privileged": true
+}
